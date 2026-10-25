@@ -174,6 +174,28 @@ footer{text-align:center;color:#8290a2;font-size:11px;padding:10px}
 </body>
 </html>
 
+
+<section id="basicScienceSection" dir="rtl" style="margin-top:24px;padding:20px;background:#f8fafc;border:1px solid #dbe3ee;border-radius:16px;font-family:Tahoma,sans-serif;">
+  <h2 style="color:#12366b;font-size:20px;">محاسبه معدل دروس مؤثر علوم پایه</h2>
+  <p style="color:#475569;font-size:13px;line-height:2;">
+    نمره و تعداد واحد هر درس را وارد کن. معدل به‌صورت وزنی محاسبه می‌شود.
+    طبق فهرست مبنا، معدل باید بالاتر از ۱۲ باشد.
+  </p>
+
+  <div id="basicScienceCourses"></div>
+
+  <button type="button" id="calculateBasicScience"
+    style="margin-top:14px;padding:11px 18px;background:#12366b;color:white;border:0;border-radius:9px;cursor:pointer;font-family:Tahoma;">
+    محاسبه معدل علوم پایه
+  </button>
+
+  <div style="margin-top:16px;padding:14px;background:white;border-radius:10px;">
+    <div>معدل دروس مؤثر: <strong id="basicScienceAverage">—</strong></div>
+    <div style="margin-top:8px;">مجموع واحدهای نمره‌دار: <strong id="basicScienceUnits">۰</strong></div>
+    <div id="basicScienceStatus" style="margin-top:10px;font-weight:bold;"></div>
+  </div>
+</section>
+
 <script>
 const semester = document.getElementById('semester');
 const courses = document.getElementById('courses');
@@ -404,6 +426,122 @@ function render() {
 
   calculate();
 }
+
+  
+const basicScienceCourseList = [
+  ['مقدمات علوم تشریح', 2.5],
+  ['علوم تشریح سر و گردن', 1.7],
+  ['علوم تشریح دستگاه اعصاب', 1.9],
+  ['علوم تشریح دستگاه حواس ویژه', 0.9],
+  ['علوم تشریح دستگاه قلب و عروق', 1.5],
+  ['علوم تشریح دستگاه تنفس', 0.7],
+  ['علوم تشریح دستگاه گوارش', 2],
+  ['علوم تشریح دستگاه ادراری تناسلی', 1.1],
+  ['علوم تشریح اسکلتی عضلانی', 2.4],
+  ['علوم تشریح غدد درون‌ریز', 0.4],
+
+  ['فیزیولوژی سلول', 0.8],
+  ['فیزیولوژی اعصاب و حواس ویژه', 1.5],
+  ['فیزیولوژی قلب', 0.5],
+  ['فیزیولوژی گردش خون', 1.2],
+  ['فیزیولوژی تنفس', 0.7],
+  ['فیزیولوژی گوارش', 0.7],
+  ['فیزیولوژی خون', 0.4],
+  ['فیزیولوژی کلیه', 0.8],
+  ['فیزیولوژی غدد و تولید مثل', 1.3],
+
+  ['بیوشیمی مولکول و سلول', 2.3],
+  ['بیوشیمی دیسیپلین', 1.7],
+  ['بیوشیمی کلیه', 0.2],
+  ['بیوشیمی هورمون', 0.7],
+
+  ['انگل‌شناسی پزشکی', 2],
+  ['قارچ‌شناسی پزشکی', 1],
+  ['باکتری‌شناسی پزشکی', 3],
+  ['ویروس‌شناسی پزشکی', 1],
+  ['ایمنی‌شناسی پزشکی', 2],
+  ['اصول خدمات سلامت', 1.5],
+  ['اصول اپیدمیولوژی', 2],
+  ['زبان انگلیسی عمومی', 2],
+  ['زبان تخصصی پزشکی ۱', 3],
+  ['زبان تخصصی پزشکی ۲', 3],
+  ['اندیشه اسلامی ۱', 2],
+  ['انقلاب اسلامی و ریشه‌ها', 2]
+];
+
+const basicScienceContainer = document.getElementById('basicScienceCourses');
+
+basicScienceCourseList.forEach((course, index) => {
+  const row = document.createElement('div');
+  row.style.cssText = 'display:grid;grid-template-columns:minmax(0,1fr) 75px 85px;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid #e2e8f0;font-size:12px;';
+
+  const name = document.createElement('div');
+  name.textContent = course[0];
+
+  const units = document.createElement('input');
+  units.type = 'number';
+  units.min = '0';
+  units.step = '0.1';
+  units.value = course[1];
+  units.title = 'واحد درس';
+  units.style.cssText = 'width:100%;box-sizing:border-box;padding:8px 3px;border:1px solid #cbd5e1;border-radius:7px;';
+
+  const grade = document.createElement('input');
+  grade.type = 'number';
+  grade.min = '0';
+  grade.max = '20';
+  grade.step = '0.25';
+  grade.placeholder = 'نمره';
+  grade.id = 'basicScienceGrade' + index;
+  grade.style.cssText = 'width:100%;box-sizing:border-box;padding:8px 3px;border:1px solid #cbd5e1;border-radius:7px;';
+
+  row.append(name, units, grade);
+  basicScienceContainer.appendChild(row);
+});
+
+document.getElementById('calculateBasicScience').addEventListener('click', () => {
+  let weightedSum = 0;
+  let unitsSum = 0;
+
+  basicScienceCourseList.forEach((course, index) => {
+    const gradeInput = document.getElementById('basicScienceGrade' + index);
+    const row = gradeInput.parentElement;
+    const units = Number(row.children[1].value);
+    const gradeText = gradeInput.value.trim();
+    const grade = Number(gradeText);
+
+    if (
+      gradeText !== '' &&
+      Number.isFinite(units) &&
+      units > 0 &&
+      Number.isFinite(grade) &&
+      grade >= 0 &&
+      grade <= 20
+    ) {
+      weightedSum += units * grade;
+      unitsSum += units;
+    }
+  });
+
+  document.getElementById('basicScienceAverage').textContent =
+    unitsSum ? (weightedSum / unitsSum).toFixed(2) : '—';
+
+  document.getElementById('basicScienceUnits').textContent =
+    unitsSum.toLocaleString('fa-IR');
+
+  const status = document.getElementById('basicScienceStatus');
+
+  if (!unitsSum) {
+    status.textContent = 'ابتدا نمره درس‌ها را وارد کن.';
+    status.style.color = '#64748b';
+  } else if (weightedSum / unitsSum > 12) {
+    status.textContent = 'معدل بالاتر از ۱۲ است.';
+    status.style.color = '#15803d';
+  } else {
+    status.textContent = 'معدل هنوز بالاتر از ۱۲ نیست.';
+    status.style.color = '#b91c1c';
+  }
+});
 
 function calculate() {
   let weightedSum = 0;
