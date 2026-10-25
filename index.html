@@ -1,0 +1,430 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>معدل‌یار پزشکی</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+*{box-sizing:border-box}
+body{
+  margin:0;
+ font-family:'Vazirmatn',Tahoma,Arial,sans-serif;
+  background:#f2f5fa;
+  color:#17243a;
+}
+header{
+  background:linear-gradient(135deg,#102746,#1767a8);
+  color:white;
+  padding:30px 16px;
+}
+.header-inner,main{max-width:950px;margin:auto}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{
+  width:52px;height:52px;border-radius:15px;
+  background:#ffffff20;display:grid;place-items:center;
+  font-size:28px;
+}
+h1{font-size:24px;margin:0}
+header p{color:#dce9f9;font-size:13px;margin:6px 0 0}
+main{padding:20px 14px}
+.card{
+  background:white;border:1px solid #e2e8f0;
+  border-radius:16px;padding:20px;margin-bottom:16px;
+  box-shadow:0 5px 20px #132c4a0b;
+}
+h2{font-size:17px;margin:0 0 15px}
+label{display:block;font-size:13px;margin-bottom:7px}
+input,select,button{
+  font-family:inherit;font-size:14px;border-radius:9px;
+}
+input,select{
+  width:100%;padding:11px;border:1px solid #d7e0ec;
+  background:white;color:#17243a;min-width:0;
+}
+input:focus,select:focus{
+  outline:2px solid #c6dcff;border-color:#1767a8;
+}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.stat{
+  background:#f2f7ff;border-radius:12px;padding:14px 7px;
+  text-align:center;
+}
+.stat strong{
+  display:block;color:#1767a8;font-size:24px;direction:ltr;
+}
+.stat span{font-size:11px;color:#627188}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:450px}
+th,td{
+  padding:10px 7px;text-align:right;
+  border-bottom:1px solid #e8edf4;font-size:13px;
+}
+th{background:#f7f9fc;color:#5b6b80;font-size:12px}
+td:first-child{min-width:180px}
+.grade{max-width:100px;direction:ltr}
+.units{max-width:85px;direction:ltr}
+button{
+  border:0;padding:10px 14px;cursor:pointer;font-weight:bold;
+}
+.primary{background:#1767a8;color:white}
+.secondary{background:#eaf1fb;color:#174b7c}
+.danger{background:#fff0f0;color:#b83232}
+.delete{padding:6px 10px;background:#fff0f0;color:#b83232}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.note{font-size:12px;color:#718096;line-height:1.9}
+.status{font-size:12px;color:#16845b;margin-top:12px}
+footer{text-align:center;color:#8290a2;font-size:11px;padding:10px}
+@media(max-width:520px){
+  h1{font-size:21px}
+  .card{padding:14px}
+  .stats{gap:6px}
+  .stat strong{font-size:20px}
+  .stat span{font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo">🎓</div>
+      <div>
+        <h1>معدل‌یار پزشکی</h1>
+        <p>محاسبه آسان معدل ترم دانشجویان پزشکی</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h2>انتخاب نیمسال تحصیلی</h2>
+    <label for="semester">ترم موردنظر</label>
+    <select id="semester">
+      <option value="1">ترم اول</option>
+      <option value="2">ترم دوم</option>
+      <option value="3">ترم سوم</option>
+      <option value="4">ترم چهارم</option>
+      <option value="5">ترم پنجم</option>
+      <option value="6">ترم ششم</option>
+      <option value="7">ترم هفتم</option>
+      <option value="8">ترم هشتم</option>
+      <option value="9">ترم نهم</option>
+      <option value="10">ترم دهم</option>
+      <option value="11">ترم یازدهم</option>
+      <option value="12">ترم دوازدهم</option>
+      <option value="13">ترم سیزدهم</option>
+      <option value="14">ترم چهاردهم</option>
+    </select>
+    <p class="note">
+      نمره‌ها را از ۰ تا ۲۰ وارد کن. معدل بر اساس تعداد واحد هر درس محاسبه می‌شود.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>خلاصه عملکرد ترم</h2>
+    <div class="stats">
+      <div class="stat">
+        <strong id="average">—</strong>
+        <span>معدل ترم</span>
+      </div>
+      <div class="stat">
+        <strong id="totalUnits">0</strong>
+        <span>واحدهای نمره‌دار</span>
+      </div>
+      <div class="stat">
+        <strong id="gradedCount">0</strong>
+        <span>دروس نمره‌دار</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>فهرست دروس و نمرات</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>نام درس</th>
+            <th>واحد</th>
+            <th>نمره</th>
+            <th>حذف</th>
+          </tr>
+        </thead>
+        <tbody id="courses"></tbody>
+      </table>
+    </div>
+    <div class="actions">
+      <button class="primary" id="addCourse">+ افزودن درس</button>
+      <button class="secondary" id="clearGrades">پاک‌کردن نمرات</button>
+      <button class="danger" id="clearCourses">حذف همه دروس</button>
+    </div>
+    <p class="status" id="status">آماده محاسبه</p>
+    <p class="note">
+      اطلاعات هر ترم در حافظه همین مرورگر ذخیره می‌شود. پاک‌کردن داده‌های مرورگر ممکن است اطلاعات ذخیره‌شده را حذف کند.
+    </p>
+  </section>
+
+  <footer>معدل‌یار پزشکی | ابزار محاسبه معدل ترمی</footer>
+</main>
+</body>
+</html>نفهمی
+
+<script>
+const semester = document.getElementById('semester');
+const courses = document.getElementById('courses');
+const average = document.getElementById('average');
+const totalUnits = document.getElementById('totalUnits');
+const gradedCount = document.getElementById('gradedCount');
+const statusText = document.getElementById('status');
+
+const storageKey = 'moaddelyar_medical_v1';
+let allTerms = {};
+
+try {
+  allTerms = JSON.parse(localStorage.getItem(storageKey) || '{}');
+} catch (e) {
+  allTerms = {};
+}
+
+const curriculum = {
+  1: [
+    ['مقدمات علوم تشریح', 2.5],
+    ['فیزیولوژی سلول', 0.8],
+    ['بیوشیمی مولکول و سلول', 2.3],
+    ['فیزیک پزشکی', 2],
+    ['روان‌شناسی سلامت', 2],
+    ['تربیت بدنی ۱', 1],
+    ['زبان پیش', 3],
+    ['تفسیر موضوعی قرآن', 2],
+    ['دانش خانواده و جمعیت', 2],
+    ['آداب پزشکی ۱', 0.5]
+  ],
+  2: [
+    ['علوم تشریح سر و گردن', 1.7],
+    ['علوم تشریح دستگاه اعصاب', 1.9],
+    ['علوم تشریح دستگاه حواس ویژه', 0.9],
+    ['فیزیولوژی اعصاب و حواس ویژه', 1.5],
+    ['بیوشیمی دیسیپلین', 1.7],
+    ['اصول خدمات سلامت', 1.5],
+    ['فارسی عمومی', 2],
+    ['آیین زندگی (اخلاق کاربردی)', 2],
+    ['تربیت بدنی ۲', 1],
+    ['آداب پزشکی ۲', 0.5],
+    ['زبان انگلیسی عمومی', 2],
+['علوم و معارف دفاع مقدس و مقاومت', 2]
+  ],
+  3: [
+    ['علوم تشریح دستگاه قلب و عروق', 1.5],
+    ['فیزیولوژی قلب', 0.5],
+    ['فیزیولوژی گردش خون', 1.2],
+    ['علوم تشریح دستگاه تنفس', 0.7],
+    ['فیزیولوژی تنفس', 0.7],
+    ['انگل‌شناسی پزشکی', 2],
+    ['قارچ‌شناسی پزشکی', 1],
+    ['ایمنی‌شناسی پزشکی', 2],
+    ['تاریخ فرهنگ و تمدن اسلامی', 2],
+    ['اندیشه اسلامی ۱', 2],
+    ['مدیریت سلامت در حوادث و بلایا', 2],
+    ['زبان تخصصی پزشکی ۱', 3],
+    ['آداب پزشکی ۳', 0.5]
+  ],
+  4: [
+    ['علوم تشریح دستگاه گوارش', 2],
+    ['علوم تشریح دستگاه ادراری تناسلی', 1.1],
+    ['فیزیولوژی گوارش', 0.7],
+    ['فیزیولوژی خون', 0.4],
+    ['بیوشیمی کلیه', 0.2],
+    ['فیزیولوژی کلیه', 0.8],
+    ['باکتری‌شناسی پزشکی', 3],
+    ['ویروس‌شناسی پزشکی', 1],
+    ['تاریخ تحلیلی صدر اسلام', 2],
+    ['اندیشه اسلامی ۲', 2],
+    ['زبان تخصصی پزشکی ۲', 3],
+    ['آداب پزشکی ۴', 0.5],
+    ['درس انتخابی', 2]
+  ],
+  5: [
+    ['فیزیولوژی غدد و تولید مثل', 1.3],
+    ['علوم تشریح اسکلتی عضلانی', 2.4],
+    ['علوم تشریح غدد درون‌ریز', 0.4],
+    ['بیوشیمی هورمون', 0.7],
+    ['کلیات پاتولوژی و آسیب‌شناسی', 0.5],
+    ['پاتولوژی آماس و ترمیم بافتی', 0.6],
+    ['پاتولوژی اختلالات سیستم ایمنی', 0.5],
+    ['پاتولوژی نئوپلازی', 0.6],
+    ['پاتولوژی اختلالات ژنتیک و بیماری‌های کودکی', 0.5],
+    ['پاتولوژی محیطی، تغذیه‌ای و عفونی', 0.4],
+    ['پاتولوژی عملی', 1],
+    ['ژنتیک پزشکی', 2],
+    ['اصول پایه فارماکولوژی پزشکی', 1],
+    ['اصول کلی تغذیه', 2],
+    ['اصول اپیدمیولوژی', 2],
+    ['انقلاب اسلامی و ریشه‌ها', 2]
+  ]
+};
+
+function saveData() {
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(allTerms));
+    statusText.textContent = 'اطلاعات این ترم ذخیره شد.';
+  } catch (e) {
+    statusText.textContent = 'ذخیره خودکار در این مرورگر در دسترس نیست.';
+  }
+}
+
+function getCurrentCourses() {
+  const key = semester.value;
+
+  if (!Array.isArray(allTerms[key])) {
+    allTerms[key] = (curriculum[key] || []).map(([name, units]) => ({
+      name: name,
+      units: String(units),
+      grade: ''
+    }));
+  }
+
+  return allTerms[key];
+}
+
+function render() {
+  courses.innerHTML = '';
+
+  getCurrentCourses().forEach((course, index) => {
+    const tr = document.createElement('tr');
+
+    const nameCell = document.createElement('td');
+    const nameInput = document.createElement('input');
+    nameInput.value = course.name;
+    nameInput.setAttribute('aria-label', 'نام درس');
+    nameInput.addEventListener('input', () => {
+      course.name = nameInput.value;
+      saveData();
+    });
+    nameCell.appendChild(nameInput);
+
+    const unitCell = document.createElement('td');
+    const unitInput = document.createElement('input');
+    unitInput.type = 'number';
+    unitInput.min = '0.1';
+    unitInput.step = '0.1';
+    unitInput.className = 'units';
+    unitInput.value = course.units;
+    unitInput.setAttribute('aria-label', 'تعداد واحد');
+    unitInput.addEventListener('input', () => {
+      course.units = unitInput.value;
+      calculate();
+      saveData();
+    });
+    unitCell.appendChild(unitInput);
+
+    const gradeCell = document.createElement('td');
+    const gradeInput = document.createElement('input');
+    gradeInput.type = 'number';
+    gradeInput.min = '0';
+    gradeInput.max = '20';
+    gradeInput.step = '0.01';
+    gradeInput.className = 'grade';
+    gradeInput.placeholder = 'از ۲۰';
+    gradeInput.value = course.grade;
+    gradeInput.setAttribute('aria-label', 'نمره درس');
+    gradeInput.addEventListener('input', () => {
+      course.grade = gradeInput.value;
+      calculate();
+      saveData();
+    });
+    gradeCell.appendChild(gradeInput);
+
+    const deleteCell = document.createElement('td');
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.className = 'delete';
+    deleteButton.textContent = '×';
+    deleteButton.setAttribute('aria-label', 'حذف درس');
+    deleteButton.addEventListener('click', () => {
+      getCurrentCourses().splice(index, 1);
+      saveData();
+      render();
+    });
+    deleteCell.appendChild(deleteButton);
+
+    tr.append(nameCell, unitCell, gradeCell, deleteCell);
+    courses.appendChild(tr);
+  });
+
+  calculate();
+}
+
+function calculate() {
+  let weightedSum = 0;
+  let unitsSum = 0;
+  let count = 0;
+
+  getCurrentCourses().forEach(course => {
+    const units = Number(course.units);
+    const gradeText = String(course.grade).trim();
+    const grade = Number(gradeText);
+
+    if (
+      gradeText !== '' &&
+      Number.isFinite(units) &&
+      units > 0 &&
+      Number.isFinite(grade) &&
+      grade >= 0 &&
+      grade <= 20
+    ) {
+      weightedSum += units * grade;
+      unitsSum += units;
+      count++;
+    }
+  });
+
+  average.textContent = unitsSum
+    ? (weightedSum / unitsSum).toFixed(2)
+    : '—';
+
+  totalUnits.textContent = unitsSum.toLocaleString('fa-IR');
+  gradedCount.textContent = count.toLocaleString('fa-IR');
+}
+
+document.getElementById('addCourse').addEventListener('click', () => {
+  getCurrentCourses().push({
+    name: '',
+    units: '',
+    grade: ''
+  });
+  saveData();
+  render();
+});
+
+document.getElementById('clearGrades').addEventListener('click', () => {
+  if (!confirm('نمرات این ترم پاک شوند؟')) return;
+
+  getCurrentCourses().forEach(course => {
+    course.grade = '';
+  });
+
+  saveData();
+  render();
+});
+
+document.getElementById('clearCourses').addEventListener('click', () => {
+  if (!confirm('تمام دروس این ترم حذف شوند؟')) return;
+
+  allTerms[semester.value] = [];
+  saveData();
+  render();
+});
+
+semester.addEventListener('change', () => {
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
