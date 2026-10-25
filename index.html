@@ -121,7 +121,7 @@ footer{text-align:center;color:#8290a2;font-size:11px;padding:10px}
       <option value="14">ترم چهاردهم</option>
     </select>
     <p class="note">
-      نمره‌ها را از ۰ تا ۲۰ وارد کن. معدل بر اساس تعداد واحد هر درس محاسبه می‌شود.
+      نمره‌ها را از ۰ تا ۲۰ وارد کنید. معدل بر اساس تعداد واحد هر درس محاسبه می‌شود.
     </p>
   </section>
 
@@ -178,7 +178,7 @@ footer{text-align:center;color:#8290a2;font-size:11px;padding:10px}
 <section id="basicScienceSection" dir="rtl" style="margin-top:24px;padding:20px;background:#f8fafc;border:1px solid #dbe3ee;border-radius:16px;">
   <h2 style="color:#12366b;font-size:20px;">محاسبه معدل دروس مؤثر علوم پایه</h2>
   <p style="color:#475569;font-size:13px;line-height:2;">
-    نمره و تعداد واحد هر درس را وارد کن. معدل به‌صورت وزنی محاسبه می‌شود.
+    نمره و تعداد واحد هر درس را وارد کنید. معدل به‌صورت وزنی محاسبه می‌شود.
     طبق فهرست مبنا، معدل باید بالاتر از ۱۲ باشد.
   </p>
 
@@ -221,7 +221,7 @@ const curriculum = {
     ['فیزیک پزشکی', 2],
     ['روان‌شناسی سلامت', 2],
     ['تربیت بدنی ۱', 1],
-    ['زبان پیش', 3],
+    ['زبان پیش ۱', 3],
     ['تفسیر موضوعی قرآن', 2],
     ['دانش خانواده و جمعیت', 2],
     ['آداب پزشکی ۱', 0.5]
@@ -238,6 +238,7 @@ const curriculum = {
     ['تربیت بدنی ۲', 1],
     ['آداب پزشکی ۲', 0.5],
     ['زبان انگلیسی عمومی', 2],
+    ['زبان پیش ۲', 3],
 ['علوم و معارف دفاع مقدس و مقاومت', 2]
   ],
   3: [
@@ -532,7 +533,7 @@ document.getElementById('calculateBasicScience').addEventListener('click', () =>
   const status = document.getElementById('basicScienceStatus');
 
   if (!unitsSum) {
-    status.textContent = 'ابتدا نمره درس‌ها را وارد کن.';
+    status.textContent = 'ابتدا نمره درس‌ها را وارد کنید.';
     status.style.color = '#64748b';
   } else if (weightedSum / unitsSum > 12) {
     status.textContent = 'معدل بالاتر از ۱۲ است.';
